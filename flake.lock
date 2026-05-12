@@ -1,5 +1,21 @@
 {
   "nodes": {
+    "dts-lsp-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1778554189,
+        "narHash": "sha256-KXXC3T0nksmiHu5WMbOFh2hP4Gbon7JvzKj9/jF3rNY=",
+        "owner": "urob",
+        "repo": "dts-lsp",
+        "rev": "a5609c584ac6f1fd773a187524e5134cfa827108",
+        "type": "github"
+      },
+      "original": {
+        "owner": "urob",
+        "repo": "dts-lsp",
+        "type": "github"
+      }
+    },
     "flake-utils": {
       "inputs": {
         "systems": "systems"
@@ -36,6 +52,7 @@
     },
     "root": {
       "inputs": {
+        "dts-lsp-src": "dts-lsp-src",
         "flake-utils": "flake-utils",
         "nixpkgs": "nixpkgs"
       }
