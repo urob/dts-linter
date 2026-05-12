@@ -4,9 +4,13 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
+    dts-lsp-src = {
+      url = "github:urob/dts-lsp";
+      flake = false;
+    };
   };
 
-  outputs = { self, nixpkgs, flake-utils }:
+  outputs = { self, nixpkgs, flake-utils, dts-lsp-src }:
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
@@ -54,12 +58,61 @@
 
           nativeBuildInputs = [ pkgs.makeWrapper ];
         };
+
+        # Build the LSP server from the dts-lsp-src flake input. To use a local
+        # checkout instead of the pinned GitHub revision:
+        #   nix develop .#dev --override-input dts-lsp-src git+file:///path/to/dts-lsp
+        dts-lsp-server = pkgs.buildNpmPackage {
+          pname = "devicetree-language-server";
+          version =
+            (builtins.fromJSON (builtins.readFile "${dts-lsp-src}/server/package.json")).version;
+          # Use server/ so npm ci installs server/package-lock.json deps (vscode-languageserver etc.).
+          src = "${dts-lsp-src}/server";
+          inherit nodejs;
+
+          # Keep in sync with server/package-lock.json in the dts-lsp repo.
+          npmDepsHash = "sha256-dYBA3N0/88TdhYtUlacD1PceHWE3sXNcejIzEK2m2V8=";
+
+          nativeBuildInputs = [ pkgs.esbuild ];
+
+          # Skip the license-checker step (requires network access).
+          buildPhase = ''
+            runHook preBuild
+            mkdir -p dist
+            esbuild src/server.ts \
+              --bundle \
+              --format=cjs \
+              --minify \
+              --platform=node \
+              --outfile=dist/server.js
+            runHook postBuild
+          '';
+
+          installPhase = ''
+            runHook preInstall
+            mkdir -p $out/dist
+            cp dist/server.js $out/dist/
+            runHook postInstall
+          '';
+        };
+
+        # dts-linter using the dts-lsp-src instead of the published LSP server.
+        dts-linter-dev = dts-linter.overrideAttrs (_: {
+          postInstall = ''
+            cp ${dts-lsp-server}/dist/server.js \
+               $out/lib/node_modules/dts-linter/node_modules/devicetree-language-server/dist/server.js
+          '';
+        });
       in
       {
         packages.default = dts-linter;
+        packages.dev = dts-linter-dev;
 
         devShells.default = pkgs.mkShell {
           packages = [ dts-linter ];
+        };
+        devShells.dev = pkgs.mkShell {
+          packages = [ dts-linter-dev ];
         };
       });
 }
