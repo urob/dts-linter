@@ -3,3 +3,4 @@ client/server
 tsconfig.types.tsbuildinfo
 dist
 .direnv
+result
