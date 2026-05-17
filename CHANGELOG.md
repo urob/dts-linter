@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Fixed
 
+- Fixed false-positive formatting failure when diagnostics are present. [Fixed by [urob](https://github.com/urob)]
 - Fixed log message when diff is not able to be generated.
 
 ## [0.5.0] - 2026-04-01
