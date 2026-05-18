@@ -23,7 +23,7 @@
           inherit nodejs;
 
           # Keep in sync with package-lock.json.
-          npmDepsHash = "sha256-BXyUrj3Wgd14VjKkBLn/7cPeYfXq5qKDG3bAWvJkS84=";
+          npmDepsHash = "sha256-pQygRYs7uVKasuC4bMEgDcbr/zJJcHLDALeeJVS3n+4=";
 
           # Call esbuild directly instead of via esbuild.js to skip the
           # license-checker step, which requires network access.
