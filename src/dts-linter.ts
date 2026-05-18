@@ -225,7 +225,7 @@ const schema = z.object({
     .enum(["auto", "pretty", "annotations", "json"])
     .optional()
     .default("auto"),
-  wordWrapColumn: z.number().int().min(1).optional().default(80),
+  wordWrapColumn: z.number().int().min(1).optional().default(100),
   tabSize: z.number().int().min(1).optional().default(8),
   insertSpaces: z.boolean().optional().default(false),
   filetypes: z.array(z.string()).optional(),
@@ -259,7 +259,7 @@ Options:
   --diagnosticsFull                               Show full diagnostics for files (default: false).
   --diagnosticsConfig <path>                      Path to diagnostics configuration file.
   --showInfoDiagnostics                           Show information diagnostics
-  --wordWrapColumn <number>                       Column at which to wrap long lines when formatting (default: 80).
+  --wordWrapColumn <number>                       Column at which to wrap long lines when formatting (default: 100).
   --tabSize <number>                              Number of spaces per indentation level (default: 8).
   --insertSpaces                                  Use spaces instead of tabs for indentation (default: false).
   --patchFile <path>                              Write formatting diff output to this file (optional).
