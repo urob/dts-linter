@@ -46,6 +46,7 @@ dts-linter --formatFixAll
 | `--format`                            | boolean                           | `false`           | Format the specified files (automatically set to true when formatFixAll)                           |
 | `--formatFixAll`                      | boolean                           | `false`           | Apply formatting changes directly to files                                                         |
 | `--tabSize`                           | number                            | `8`               | Number of spaces per indentation level                                                             |
+| `--wordWrapColumn`                    | number                            | `80`              | Column at which to wrap long lines when formatting                                                 |
 | `--insertSpaces`                      | boolean                           | `false`           | Use spaces instead of tabs for indentation                                                         |
 | `--disableBaseFormattingRules`        | boolean                           | `false`           | Disable base formatting rules                                                                      |
 | `--disableIndentExpressions`          | boolean                           | `false`           | Disable indentation for expressions when formatting                                                |
