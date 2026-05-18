@@ -23,7 +23,7 @@
           inherit nodejs;
 
           # Keep in sync with package-lock.json.
-          npmDepsHash = "sha256-BXyUrj3Wgd14VjKkBLn/7cPeYfXq5qKDG3bAWvJkS84=";
+          npmDepsHash = "sha256-bM5zJPeai5+QjDu3epbMtT2PsFp5eojO4HY5z2dzR5s=";
 
           # Call esbuild directly instead of via esbuild.js to skip the
           # license-checker step, which requires network access.
@@ -72,6 +72,7 @@
 
           # Keep in sync with server/package-lock.json in the dts-lsp repo.
           npmDepsHash = "sha256-dYBA3N0/88TdhYtUlacD1PceHWE3sXNcejIzEK2m2V8=";
+          # npmDepsHash = "sha256-o03f1i70fw6VibdMtsI1CuG4+YctettwnSzh6P1zjQY=";
 
           nativeBuildInputs = [ pkgs.esbuild ];
 
