@@ -45,6 +45,7 @@ dts-linter --formatFixAll
 | `--logLevel`                          | `none\|verbose`                   | `none`            | Set the logging verbosity                                                                          |
 | `--format`                            | boolean                           | `false`           | Format the specified files (automatically set to true when formatFixAll)                           |
 | `--formatFixAll`                      | boolean                           | `false`           | Apply formatting changes directly to files                                                         |
+| `--wordWrapColumn`                    | number                            | `100`             | Column at which to wrap long lines when formatting                                                 |
 | `--tabSize`                           | number                            | `8`               | Number of spaces per indentation level                                                             |
 | `--insertSpaces`                      | boolean                           | `false`           | Use spaces instead of tabs for indentation                                                         |
 | `--disableBaseFormattingRules`        | boolean                           | `false`           | Disable base formatting rules                                                                      |
