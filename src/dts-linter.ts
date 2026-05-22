@@ -317,7 +317,10 @@ try {
     tabSize: values.tabSize ? parseInt(values.tabSize, 10) : undefined,
     threads: values.threads ? parseInt(values.threads, 10) : undefined,
     filetypes: values.filetypes
-      ? values.filetypes.split(",").map((s) => s.trim()).filter(Boolean)
+      ? values.filetypes
+          .split(",")
+          .map((s) => s.trim())
+          .filter(Boolean)
       : undefined,
   };
 
@@ -517,7 +520,9 @@ const jsonOut: { cwd: string; issues: Issue[] } = {
 };
 
 if (!argv.diagnosticsConfig && !argv.file) {
-  const defaultTypes = diagnosticsFull ? ["dts"] : ["dts", "dtsi", "overlay"];
+  const defaultTypes = diagnosticsFull
+    ? ["dts"]
+    : ["dts", "dtsi", "overlay", "keymap"];
   const activeTypes = argv.filetypes ?? defaultTypes;
   const globString =
     activeTypes.length === 1
@@ -1063,7 +1068,11 @@ const formatFile = async (
     );
   }
 
-  if (result && result.diagnostics.length && (outputFormat === "json" || outputFormat === "annotations")) {
+  if (
+    result &&
+    result.diagnostics.length &&
+    (outputFormat === "json" || outputFormat === "annotations")
+  ) {
     result.diagnostics.forEach((issue) => {
       log(
         "error",
