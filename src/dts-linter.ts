@@ -1002,25 +1002,53 @@ const formatFile = async (
   const result = (await connection.sendRequest(
     "devicetree/formattingText",
     params,
-  )) as { text: string; diagnostics: Diagnostic[] } | undefined;
+  )) as
+    | {
+        text: string;
+        diagnostics: Diagnostic[];
+        nonActionableDiagnostics: Diagnostic[];
+      }
+    | undefined;
 
   const indent = mainFile ? "" : "\t";
 
   const textIdentical = result && result.text === originalText;
-  if (result && !textIdentical) {
-    const newText = result.text;
+  if (result && (!textIdentical || result.diagnostics.length)) {
+    const newText = result?.text;
     const relativePath = relative(cwd, absPath);
-    const diff = createPatch(`a/${relativePath}`, originalText, newText);
-    log(
-      "error",
-      diff,
-      absPath,
-      "Not correctly formatted.",
-      undefined,
-      undefined,
-      indent,
-      progressString,
-    );
+    let diff: string | null = null;
+    if (!textIdentical) {
+      diff = createPatch(`a/${relativePath}`, originalText, newText);
+      log(
+        "error",
+        diff,
+        absPath,
+        "Not correctly formatted.",
+        undefined,
+        undefined,
+        indent,
+        progressString,
+      );
+    }
+
+    if (outputFormat === "json" || outputFormat === "annotations") {
+      result.diagnostics.forEach((issue) => {
+        log(
+          "error",
+          issue.message,
+          absPath,
+          undefined,
+          {
+            line: issue.range.start.line + 1,
+            col: issue.range.start.character,
+          },
+          {
+            line: issue.range.end.line + 1,
+            col: issue.range.end.character,
+          },
+        );
+      });
+    }
 
     if (diffs.has(absPath)) {
       if (diffs.get(absPath) !== diff && patchFile) {
@@ -1042,18 +1070,36 @@ const formatFile = async (
       });
       if (diff) {
         diffs.set(absPath, diff);
-      } else {
-        log(
-          "error",
-          `${relative(cwd, absPath)} unable to generate diff to format file.`,
-          undefined,
-          undefined,
-          undefined,
-          undefined,
-          indent,
-          progressString,
-        );
       }
+    }
+
+    if (result.nonActionableDiagnostics.length) {
+      let message = `${relative(cwd, absPath)} unable to generate diff to format file.`;
+      if (outputFormat !== "json" && outputFormat !== "annotations") {
+        message +=
+          "\n\t" +
+          result.nonActionableDiagnostics
+            .map(
+              (issue) =>
+                `[${diagnosticSeverityToString(issue.severity)}] ${
+                  issue.message
+                }: ${JSON.stringify(issue.range.start)}-${JSON.stringify(
+                  issue.range.end,
+                )}`,
+            )
+            .join("\n\t");
+      }
+
+      log(
+        "error",
+        message,
+        undefined,
+        undefined,
+        undefined,
+        undefined,
+        indent,
+        progressString,
+      );
     }
   } else {
     log(
@@ -1066,29 +1112,6 @@ const formatFile = async (
       indent,
       progressString,
     );
-  }
-
-  if (
-    result &&
-    result.diagnostics.length &&
-    (outputFormat === "json" || outputFormat === "annotations")
-  ) {
-    result.diagnostics.forEach((issue) => {
-      log(
-        "error",
-        issue.message,
-        absPath,
-        undefined,
-        {
-          line: issue.range.start.line + 1,
-          col: issue.range.start.character,
-        },
-        {
-          line: issue.range.end.line + 1,
-          col: issue.range.end.character,
-        },
-      );
-    });
   }
 };
 
