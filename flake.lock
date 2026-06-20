@@ -3,15 +3,15 @@
     "dts-lsp-src": {
       "flake": false,
       "locked": {
-        "lastModified": 1778598002,
-        "narHash": "sha256-ldB8EN59+1LNskeZAPYg83q99fMgK/iPEiW1KQpblxI=",
-        "owner": "urob",
+        "lastModified": 1781627080,
+        "narHash": "sha256-jxVOdequqa4dPfYr7n9L37EIZ24ENCQrpryaGq+ZlBs=",
+        "owner": "kylebonnici",
         "repo": "dts-lsp",
-        "rev": "c1fe01b819e3171f98660c21f8c5f58a413279d6",
+        "rev": "7e8d7d34fbfa7fc599a3ed9feefdf99cb00f6104",
         "type": "github"
       },
       "original": {
-        "owner": "urob",
+        "owner": "kylebonnici",
         "repo": "dts-lsp",
         "type": "github"
       }

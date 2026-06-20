@@ -5,7 +5,7 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
     dts-lsp-src = {
-      url = "github:urob/dts-lsp";
+      url = "github:kylebonnici/dts-lsp";
       flake = false;
     };
   };
