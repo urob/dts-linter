@@ -71,7 +71,7 @@
           inherit nodejs;
 
           # Keep in sync with server/package-lock.json in the dts-lsp repo.
-          npmDepsHash = "sha256-dYBA3N0/88TdhYtUlacD1PceHWE3sXNcejIzEK2m2V8=";
+          npmDepsHash = "sha256-zt/FdoevcA5XsF2Zew2isrLkUWgrACPkHkOWuL8k5D8=";
 
           nativeBuildInputs = [ pkgs.esbuild ];
 
